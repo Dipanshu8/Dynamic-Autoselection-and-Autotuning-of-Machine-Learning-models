@@ -360,3 +360,8 @@ sns.heatmap(confusion_matrix_per_cluster[0][0],annot=True,fmt='d')
 sns.heatmap(confusion_matrix_per_cluster[5][1],annot=True,fmt='d')
 sns.heatmap(confusion_matrix_per_cluster[1][1],annot=True,fmt='d')
 
+## Procedure
+* Open Anaconda navigatore
+* Open Jupyter Notebook Application From Anaconda navigator
+* Save Cloud.csv file and code.py file at same locations
+* Run Code.py in Jupyter Notebook and see the results
