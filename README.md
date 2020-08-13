@@ -274,7 +274,7 @@ n_optimum=min_i
 rf=RandomForestClassifier(n_estimators=n_optimum)
 rf.fit(x_train,Y_train)
 acc_rf_optimum=rf.score(x_test,Y_test)
-# hyper_parameter tuning for MLPClassifier
+### hyper_parameter tuning for MLPClassifier
 error_rate = []
 min_i=0
 min_error=999
