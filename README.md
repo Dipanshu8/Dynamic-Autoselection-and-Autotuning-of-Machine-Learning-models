@@ -1,4 +1,33 @@
-# Machine-Learning-models
+# Dynamic Autoselection and Autotuning of Machine Learning Models
+## Table of contents
+* [Introduction](#Introduction)
+* [Technical Specification](#technical_specification)
+* [Milestones](#milestones)
+* [Software Setup](#software_setup)
+* [Packages Required](#packages)
+* [Code](#code)
+## Introduction
+Cloud network monitoring data is dynamic and distributed. Signals to monitor the cloud can appear, disappear or change their importance and clarity over time. Machine learning (ML) models tuned to a given data set can therefore quickly become inadequate. A model might be highly accurate at one point in time but may lose its accuracy at a later time due to changes in input data and their features.Distributed learning with dynamic model selection is therefore often required. Under such selection, poorly performing models (although aggressively tuned for the prior data) are retired or put on standby while new or standby models are brought in. The well-known method of Ensemble ML (EML) may potentially be applied to improve the overall accuracy of a family of ML models. Unfortunately, EML has several disadvantages, including the need for continuous training, excessive computational resources, requirement for large training datasets, high risks of overfitting, and a time-consuming model-building process. In this paper, we propose a novel cloud methodology for automatic ML model selection and tuning that automates the model build and selection and is competitive with existing methods.
+
+We use unsupervised learning to better explore the data space before the generation of targeted supervised learning models in an automated fashion. In particular, we create a Cloud DevOps architecture for autotuning and selection based on container orchestration and messaging between containers, and take advantage of a new autoscaling method to dynamically create and evaluate instantiation of ML algorithms. The proposed methodology and tool are demonstrated on cloud network security datasets.
+## Technical Specification
+Algorithms:
+* Naive Bayes
+* Decision Tree
+* K-Means
+* Random Forest
+* KNN
+* SVM
+* MLP
+* One vs All
+## Milestones
+The whole project is divided into many parts. The first part is we needed to find a dataset for the model which could fit in. Then we had to download the appropriate software and libraries in python along with anaconda navigator and PyCharm. Then , out of so many columns , the important columns were extracted and rest of them were dropped. Next , we needed to code for the same and create the model and then the model had to be trained on the data.  Python packages such as Numpy, Scipy, Scikit learn, Pandas, Matplotlib etc. have been used.
+Some baseline tests have been performed over the dataset  using existing algorithms such as multi-class classification.  The dataset feature “attack name” is used as the label.
+## Software Setup
+1.Anaconda Navigator [Click Here](https://www.anaconda.com/products/individual)
+2.Jupyter Notebook from Anaconda Navigator
+3.Get large Dataset from cloud
+## Packages
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,10 +50,11 @@ from keras.layers import Dense,Softmax
 from keras.utils import to_categorical
 import pickle
 import h5py
-
+## Code
+### Training Dataset
 train_data=pd.read_csv(r'cloud_train.csv')
 train_data=train_data.sample(n=1000)
-
+### Testing Dataset
 test_data=pd.read_csv(r'cloud_test.csv')
 test_data=test_data.sample(n=1000)
 
@@ -93,6 +123,7 @@ pd.DataFrame(x_train).head()
 
 print(np.unique(Y_train))
 print(x_train.shape,x_test.shape)
+### Naive Bayes
 NB=GaussianNB()
 NB.fit(x_train,Y_train)
 
@@ -104,7 +135,7 @@ acc_NB=NB.score(x_test,Y_test)
 cm=confusion_matrix(NB.predict(x_test),Y_test)
 acc_per_class_NB=cm.diagonal()/cm.sum(axis=0)
 
-
+### Knn Classifier
 knn=KNeighborsClassifier(n_neighbors=5)
 knn.fit(x_train,Y_train)
 
@@ -118,6 +149,7 @@ acc_knn=knn.score(x_test,Y_test)
 cm=confusion_matrix(knn.predict(x_test),Y_test)
 acc_per_class_knn=cm.diagonal()/cm.sum(axis=0)
 
+### Random Forest
 rf=RandomForestClassifier(n_estimators=200)
 rf.fit(x_train,Y_train)
 
@@ -136,6 +168,7 @@ acc_rf=rf.score(x_test,Y_test)
 cm=confusion_matrix(rf.predict(x_test),Y_test)
 acc_per_class_rf=cm.diagonal()/cm.sum(axis=0)
 
+### Decision Tree
 dt=DecisionTreeClassifier()
 dt.fit(x_train,Y_train)
 
@@ -152,6 +185,7 @@ acc_dt=dt.score(x_test,Y_test)
 cm=confusion_matrix(dt.predict(x_test),Y_test)
 acc_per_class_dt=cm.diagonal()/cm.sum(axis=0)
 
+### MLP
 mlp=MLPClassifier()
 mlp.fit(x_train,Y_train)
 
@@ -167,6 +201,7 @@ MLPClassifier(activation='relu', alpha=0.0001, batch_size='auto', beta_1=0.9,
 
 acc_mlp=mlp.score(x_test,Y_test)
 
+### Accuracy Plot
 plt.bar(['NB','KNN','RF','DT'],[acc_NB,acc_knn,acc_rf,acc_dt],color=['red','green','blue','cyan'])
 cm=confusion_matrix(mlp.predict(x_test),Y_test)
 acc_per_class_mlp=cm.diagonal()/cm.sum(axis=0)
@@ -190,9 +225,9 @@ OneVsRestClassifier(estimator=SVC(C=1.0, break_ties=False, cache_size=200,
 
 
 one_all.score(x_test,Y_test)
-# hyper_parameter tuning for KNN
+### hyper_parameter tuning for KNN
 error_rate = []
-# Will take some time
+####  Will take some time
 for i in range(1,40):
  knn = KNeighborsClassifier(n_neighbors=i)# for knn hyperparameter is n_neighbors
  knn.fit(X_train,Y_train)
@@ -213,9 +248,9 @@ K_optimum=index_optimum+1
 knn= KNeighborsClassifier(n_neighbors=K_optimum)
 knn.fit(x_train,Y_train)
 acc_knn_optimum=knn.score(x_test,Y_test)
-# hyper_parameter tuning for Random Forest
+### hyper_parameter tuning for Random Forest
 error_rate = []
-# Will take some time
+#### Will take some time
 min_i=0
 min_error=9999
 for i in range(50,300,30):
@@ -239,7 +274,7 @@ n_optimum=min_i
 rf=RandomForestClassifier(n_estimators=n_optimum)
 rf.fit(x_train,Y_train)
 acc_rf_optimum=rf.score(x_test,Y_test)
-# hyper_parameter tuning for Random Forest
+# hyper_parameter tuning for MLPClassifier
 error_rate = []
 min_i=0
 min_error=999
@@ -268,6 +303,7 @@ Y_Train=np.vstack((Y_train,Y_test))
 
 x_train1=np.hstack((x_Train,Y_Train.reshape(-1,1)))
 pd.DataFrame(x_train1).head()
+### Clutering
 km=KMeans(n_clusters=6)
 km.fit(x_train1)
 clusters=km.labels_
@@ -290,6 +326,7 @@ colors=['red','green','blue','yellow','cyan','orange']
 for i,C in enumerate(cluster_data):
   plt.scatter(cluster_data[C][:,1],cluster_data[C][:,5],
               c=colors[i])
+### Accuracy Comparison per cluster
 acc_list_per_cluster={}
 confusion_matrix_per_cluster={}
 for d in cluster_data:
@@ -318,6 +355,7 @@ for c in acc_list_per_cluster:
   plt.bar(['KNN','RF'],acc_list_per_cluster[c],color=colors[j])
   j+=1
   plt.title('cluster'+str(c))
+### Heat map Visualisation
 sns.heatmap(confusion_matrix_per_cluster[0][0],annot=True,fmt='d')
 sns.heatmap(confusion_matrix_per_cluster[5][1],annot=True,fmt='d')
 sns.heatmap(confusion_matrix_per_cluster[1][1],annot=True,fmt='d')
