@@ -361,7 +361,7 @@ sns.heatmap(confusion_matrix_per_cluster[5][1],annot=True,fmt='d')
 sns.heatmap(confusion_matrix_per_cluster[1][1],annot=True,fmt='d')
 
 ## Procedure To Run
-* Open Anaconda navigatore
+* Download and install Anaconda navigatore
 * Open Jupyter Notebook Application From Anaconda navigator
 * Save Cloud.csv file and Dynamic_auto_selection_final.ipynb file at same locations
 * Run Dynamic_auto_selection_final.ipynb in Jupyter Notebook and see the results
